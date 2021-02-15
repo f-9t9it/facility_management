@@ -22,6 +22,23 @@ frappe.ui.form.on('Rental Contract', {
   },
 });
 
+
+frappe.ui.form.on('Rental Contract Item', {
+  create_invoice: async function (frm, cdt, cdn) {
+    const { message: result } = await frappe.call({
+      method: 'facility_management.api.rental_contract.create_invoice',
+      args: {
+        rental: frm.doc.name,
+        rental_item: cdn,
+      },
+    });
+    if (result) {
+      frappe.msgprint('Invoice has been created. Please refresh the page in order to view the changes.');
+    }
+  },
+});
+
+
 function _add_payment_entry(frm) {
   if (frm.doc.docstatus !== 0) {
     frm.add_custom_button(__('Add Payment Entry'), async function () {
@@ -95,7 +112,7 @@ async function _set_status(frm) {
   const statuses = await _get_statuses(invoices);
   created_invoices.forEach((invoice) => {
     const status = statuses[invoice.invoice_ref];
-    invoice.description = `${invoice.description} - ${status}`;
+    invoice.description = `Rent (${status})`;
   });
   frm.refresh_fields();
 }
