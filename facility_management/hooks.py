@@ -57,7 +57,16 @@ fixtures = [
                 ]
             ]
         ]
+    },
+    {
+        "doctype":"Workspace",
+        "filters": [
+            [
+                "name", "in", ["Facility Management"]
+            ]
+        ]
     }
+    
 ]
 # Includes in <head>
 # ------------------
